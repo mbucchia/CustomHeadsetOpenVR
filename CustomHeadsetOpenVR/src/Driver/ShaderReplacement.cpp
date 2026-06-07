@@ -455,6 +455,7 @@ Bytecode DistortionShader(bool muraCorrection = false, bool noDistortion = false
 			defines[definesCount++] = {"SUBPIXEL_SHIFT_VIVE", "1"};
 		}
 	}
+	// TODO(mbucchia): What to do here for Crystal?
 	if(driverConfigLoader.info.connectedHeadset == Config::HeadsetType::DreamAir){
 		defines[definesCount++] = {"DREAMAIR", "1"};
 		if(driverConfig.customShader.subpixelShift && driverConfig.dreamAir.subpixelShift != 0 ){

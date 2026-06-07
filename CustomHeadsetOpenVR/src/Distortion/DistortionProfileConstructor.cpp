@@ -146,6 +146,26 @@ bool PopulateBuiltInDistortionProfiles(){
 	};
 	builtInDistortionProfiles[dreamAir.name] = dreamAir;
 	
+	DistortionProfileConfig crystal = {};
+	crystal.name = "Crystal Default";
+	crystal.device = "Crystal";
+	crystal.modifiedTime = 0;
+	crystal.description = "Default distortion profile for the Crystal in this driver. It is extracted from Pimax Play.";
+	crystal.author = "Pimax";
+	crystal.creationDate = 0.0;
+	crystal.type = "MapUV";
+	builtInDistortionProfiles[crystal.name] = crystal;
+
+	DistortionProfileConfig crystalSuper = {};
+	crystalSuper.name = "Crystal Super Default";
+	crystalSuper.device = "Crystal Super";
+	crystalSuper.modifiedTime = 0;
+	crystalSuper.description = "Default distortion profile for the Crystal Super in this driver. It is extracted from Pimax Play.";
+	crystalSuper.author = "Pimax";
+	crystalSuper.creationDate = 0.0;
+	crystalSuper.type = "MapUV";
+	builtInDistortionProfiles[crystalSuper.name] = crystalSuper;
+
 	return true;
 };
 // this is pretty much just an initializer so immediately call
@@ -206,6 +226,10 @@ bool DistortionProfileConstructor::LoadDistortionProfile(std::string name){
 		radialBezierProfile->offsetX = config.offsetX;
 		radialBezierProfile->offsetY = config.offsetY;
 		newProfile = radialBezierProfile;
+	}
+	else if(config.type == "MapUV"){
+		// TODO(mbucchia): Add new type. For now, use None.
+		newProfile = new NoneDistortionProfile();
 	}
 	
 	bool changed = false;

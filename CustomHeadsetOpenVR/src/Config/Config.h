@@ -4,6 +4,8 @@
 #include <mutex>
 #include <tuple>
 
+#include "../Helpers/PimaxCommon.h"
+
 struct ConfigColor{
 	double r = 1.0;
 	double g = 1.0;
@@ -48,7 +50,7 @@ struct CustomShaderConfig{
 	// if shaders should be replaced in the compositor
 	bool enable = false;
 	bool enableForMeganeX8K = true;
-	bool enableForDreamAir = true;
+	bool enableForPimax = true;
 	bool enableForOther = false;
 	// contrast with 50 being normal
 	double contrast = 50;
@@ -117,12 +119,15 @@ public:
 		MeganeX8K = 2,
 		Vive = 3,
 		DreamAir = 4,
+		Crystal = 5,
 	};
 	
 	class BaseHeadsetConfig{
 	public:
 		// if the headset should be shimmed by this driver
 		bool enable = true;
+		// if the SLAM driver should be loaded
+		bool useSlamTracking = false;
 		// the type of headset this is
 		HeadsetType headsetType = HeadsetType::None;
 		// ipd in mm
@@ -235,7 +240,7 @@ public:
 			distortionProfileDeviceType = "DreamAir";
 			maxFovX = 96;
 			maxFovY = 86;
-			edidVendorId = 53826; // PVR
+			edidVendorId = Pimax::EdidVendorId;
 			displayRotation = 3;
 			subpixelOffsets = {0.33 / 3552.0, 0, 0, 0, -0.33 / 3552.0, 0};
 			eyeRotation = 2;
@@ -245,6 +250,36 @@ public:
 	// config for the Dream Air
 	DreamAirConfig dreamAir = {};
 	
+	class CrystalConfig : public BaseHeadsetConfig {
+	public:
+		CrystalConfig() {
+			headsetType = HeadsetType::Crystal;
+			distortionProfile = "Crystal Default";
+			distortionProfileDeviceType = "Crystal";
+			edidVendorId = Pimax::EdidVendorId;
+			resolutionX = 2880;
+			resolutionY = 2880;
+			displayRotation = 0;
+		}
+	};
+	// config for the Crystal OG
+	CrystalConfig crystal = {};
+
+	class CrystalSuperConfig : public BaseHeadsetConfig {
+	public:
+		CrystalSuperConfig() {
+			headsetType = HeadsetType::Crystal;
+			distortionProfile = "Crystal Super Default";
+			distortionProfileDeviceType = "CrystalSuper";
+			edidVendorId = Pimax::EdidVendorId;
+			resolutionX = 3840;
+			resolutionY = 3744;
+			displayRotation = 0;
+		}
+	};
+	// config for the Crystal Super
+	CrystalSuperConfig crystalSuper = {};
+
 	class FakeHeadsetConfig : public BaseHeadsetConfig{
 		public:
 		FakeHeadsetConfig(){

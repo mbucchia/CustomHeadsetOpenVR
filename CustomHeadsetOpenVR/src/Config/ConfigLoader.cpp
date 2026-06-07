@@ -32,6 +32,9 @@ void parseBaseHeadsetConfig(json headsetData, Config::BaseHeadsetConfig& headset
 	if(headsetData["enable"].is_boolean()){
 		headsetConfig.enable = headsetData["enable"].get<bool>();
 	}
+	if(headsetData["useSlamTracking"].is_boolean()){
+		headsetConfig.useSlamTracking = headsetData["useSlamTracking"].get<bool>();
+	}
 	if(headsetData["ipd"].is_number()){
 		headsetConfig.ipd = headsetData["ipd"].get<double>();
 	}
@@ -200,6 +203,14 @@ void ConfigLoader::ParseConfig(){
 			json headsetData = data["dreamAir"];
 			parseBaseHeadsetConfig(headsetData, newConfig.dreamAir);
 		}
+		if(data["crystal"].is_object()){
+			json headsetData = data["crystal"];
+			parseBaseHeadsetConfig(headsetData, newConfig.crystal);
+		}
+		if(data["crystalSuper"].is_object()){
+			json headsetData = data["crystalSuper"];
+			parseBaseHeadsetConfig(headsetData, newConfig.crystalSuper);
+		}
 		if(data["generalHeadset"].is_object()){
 			json generalHeadsetData = data["generalHeadset"];
 			if(generalHeadsetData["useViveBluetooth"].is_boolean()){
@@ -214,8 +225,8 @@ void ConfigLoader::ParseConfig(){
 			if(customShaderData["enableForMeganeX8K"].is_boolean()){
 				newConfig.customShader.enableForMeganeX8K = customShaderData["enableForMeganeX8K"].get<bool>();
 			}
-			if(customShaderData["enableForDreamAir"].is_boolean()){
-				newConfig.customShader.enableForDreamAir = customShaderData["enableForDreamAir"].get<bool>();
+			if(customShaderData["enableForPimax"].is_boolean()){
+				newConfig.customShader.enableForPimax = customShaderData["enableForPimax"].get<bool>();
 			}
 			if(customShaderData["enableForOther"].is_boolean()){
 				newConfig.customShader.enableForOther = customShaderData["enableForOther"].get<bool>();
@@ -398,6 +409,7 @@ DistortionProfileConfig ConfigLoader::ParseDistortionConfig(std::string name){
 ordered_json baseHeadsetInfo(const Config::BaseHeadsetConfig& headsetConfig){
 	return {
 		{"enable", headsetConfig.enable},
+		{"useSlamTracking", headsetConfig.useSlamTracking},
 		{"ipd", headsetConfig.ipd},
 		{"ipdOffset", headsetConfig.ipdOffset},
 		{"horizontalIPDOffset", headsetConfig.horizontalIPDOffset},
@@ -480,13 +492,15 @@ void ConfigLoader::WriteInfo(){
 		{"defaultSettings", {
 			{"meganeX8K", baseHeadsetInfo(defaultSettings.meganeX8K)},
 			{"dreamAir", baseHeadsetInfo(defaultSettings.dreamAir)},
+			{"crystal", baseHeadsetInfo(defaultSettings.crystal)},
+			{"crystalSuper", baseHeadsetInfo(defaultSettings.crystalSuper)},
 			{"generalHeadset", {
 				{"useViveBluetooth", defaultSettings.generalHeadset.useViveBluetooth},
 			}},
 			{"customShader", {
 				{"enable", defaultSettings.customShader.enable},
 				{"enableForMeganeX8K", defaultSettings.customShader.enableForMeganeX8K},
-				{"enableForDreamAir", defaultSettings.customShader.enableForDreamAir},
+				{"enableForPimax", defaultSettings.customShader.enableForPimax},
 				{"enableForOther", defaultSettings.customShader.enableForOther},
 				{"contrast", defaultSettings.customShader.contrast},
 				{"contrastMidpoint", defaultSettings.customShader.contrastMidpoint},

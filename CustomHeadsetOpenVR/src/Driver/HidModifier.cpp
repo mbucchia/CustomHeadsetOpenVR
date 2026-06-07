@@ -1,6 +1,7 @@
 #include "HidModifier.h"
 #include "DriverLog.h"
 #include "../Config/ConfigLoader.h"
+#include "../Helpers/PimaxCommon.h"
 
 #include "../../../ThirdParty/minhook/include/MinHook.h"
 #include "../../../ThirdParty/zlib/zlib.h"
@@ -276,15 +277,33 @@ std::string HidModifier::ReadLighthouseConfig(HidDeviceInfo &info){
 	
 	std::map<std::string, ordered_json> jsonOverrides = {};
 	if(driverConfig.dreamAir.enable){
-		jsonOverrides["Pimax Dream Air"] = {
+		jsonOverrides[Pimax::DreamAir::LighthouseDeviceName] = {
 			{"device", {
 				// {"eye_target_width_in_pixels", 3552},
 				// {"eye_target_height_in_pixels", 3840},
 				{"eye_target_width_in_pixels", driverConfig.dreamAir.resolutionY},
 				{"eye_target_height_in_pixels", driverConfig.dreamAir.resolutionX},
 			}},
-			{"direct_mode_edid_vid", 53826}, // PVR
+			{"direct_mode_edid_vid", Pimax::EdidVendorId},
 			// {"device_class", "controller"}, 
+		};
+	}
+	if(driverConfig.crystal.enable){
+		jsonOverrides[Pimax::Crystal::LighthouseDeviceName] = {
+			{"device", {
+				{"eye_target_width_in_pixels", driverConfig.crystal.resolutionY},
+				{"eye_target_height_in_pixels", driverConfig.crystal.resolutionX},
+			}},
+			{"direct_mode_edid_vid", Pimax::EdidVendorId},
+		};
+	}
+	if(driverConfig.crystal.enable){
+		jsonOverrides[Pimax::CrystalSuper::LighthouseDeviceName] = {
+			{"device", {
+				{"eye_target_width_in_pixels", driverConfig.crystalSuper.resolutionY},
+				{"eye_target_height_in_pixels", driverConfig.crystalSuper.resolutionX},
+			}},
+			{"direct_mode_edid_vid", Pimax::EdidVendorId},
 		};
 	}
 	if(driverConfig.meganeX8K.enable){

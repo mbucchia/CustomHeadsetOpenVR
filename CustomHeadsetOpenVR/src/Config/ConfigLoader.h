@@ -101,8 +101,8 @@ inline bool IsCustomShaderEnabled(){
 	if(driverConfigLoader.info.connectedHeadset == Config::HeadsetType::MeganeX8K){
 		return driverConfig.customShader.enableForMeganeX8K;
 	}
-	if(driverConfigLoader.info.connectedHeadset == Config::HeadsetType::DreamAir){
-		return driverConfig.customShader.enableForDreamAir;
+	if(driverConfigLoader.info.connectedHeadset == Config::HeadsetType::DreamAir || driverConfigLoader.info.connectedHeadset == Config::HeadsetType::Crystal){
+		return driverConfig.customShader.enableForPimax;
 	}
 	// all other headsets that do not have explicit toggles
 	if(driverConfigLoader.info.connectedHeadset != Config::HeadsetType::None){
