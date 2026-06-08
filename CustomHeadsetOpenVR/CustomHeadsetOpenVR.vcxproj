@@ -52,6 +52,7 @@
     <ClCompile Include="src\Config\ConfigLoader.cpp" />
     <ClCompile Include="src\Distortion\DistortionProfileConstructor.cpp" />
     <ClCompile Include="src\Distortion\PimaxDistortionProfile.cpp" />
+    <ClCompile Include="src\Distortion\MapUvDistortionProfile.cpp" />
     <ClCompile Include="src\Distortion\RadialBezierDistortionProfile.cpp" />
     <ClCompile Include="src\Driver\CompositorPlugin.cpp" />
     <ClCompile Include="src\Driver\DeviceProvider.cpp" />

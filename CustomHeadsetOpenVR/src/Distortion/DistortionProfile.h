@@ -54,4 +54,6 @@ public:
 	// returns the resolution required for 1:1 distortion
 	// width and height will be set to the panel resolution by default but should be changed based on the distortion.
 	virtual void GetRecommendedRenderTargetSize(uint32_t* pnWidth, uint32_t* pnHeight){};
+	// to override the mesh resolution from config.
+	virtual bool GetDistortionResolutionOverride(uint32_t& distortionResolution) { return false; }
 };

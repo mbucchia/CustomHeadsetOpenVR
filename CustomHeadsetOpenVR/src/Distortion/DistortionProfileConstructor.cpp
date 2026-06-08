@@ -1,6 +1,7 @@
 #include "DistortionProfileConstructor.h"
 #include "RadialBezierDistortionProfile.h"
 #include "PimaxDistortionProfile.h"
+#include "MapUvDistortionProfile.h"
 #include <cmath>
 #include <map>
 
@@ -146,7 +147,7 @@ bool PopulateBuiltInDistortionProfiles(){
 		50.0, -0.7,
 	};
 	builtInDistortionProfiles[dreamAir.name] = dreamAir;
-	
+
 	DistortionProfileConfig pimaxBuiltin = {};
 	pimaxBuiltin.name = "Pimax Builtin";
 	pimaxBuiltin.device = "Pimax";
@@ -156,6 +157,16 @@ bool PopulateBuiltInDistortionProfiles(){
 	pimaxBuiltin.creationDate = 0.0;
 	pimaxBuiltin.type = "Pimax";
 	builtInDistortionProfiles[pimaxBuiltin.name] = pimaxBuiltin;
+
+	DistortionProfileConfig crystalSuper = {};
+	crystalSuper.name = "Crystal Super Default";
+	crystalSuper.device = "Crystal Super";
+	crystalSuper.modifiedTime = 0;
+	crystalSuper.description = "Default distortion profile for the Crystal Super in this driver. It is extracted from Pimax Play.";
+	crystalSuper.author = "Pimax";
+	crystalSuper.creationDate = 0.0;
+	crystalSuper.type = "MapUV";
+	builtInDistortionProfiles[crystalSuper.name] = crystalSuper;
 
 	return true;
 };
@@ -222,6 +233,11 @@ bool DistortionProfileConstructor::LoadDistortionProfile(std::string name){
 		DriverLog("Using Pimax PVR distortion function");
 		PimaxDistortionProfile* pimaxProfile = new PimaxDistortionProfile();
 		newProfile = pimaxProfile;
+	}
+	else if(config.type == "MapUV"){
+		DriverLog("Using UV map distortion function for device '%s'", config.name.c_str());
+		MapUvDistortionProfile* mapUvProfile = new MapUvDistortionProfile(config.name);
+		newProfile = mapUvProfile;
 	}
 
 	bool changed = false;
