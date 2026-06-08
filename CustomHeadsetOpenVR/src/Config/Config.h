@@ -260,6 +260,8 @@ public:
 			resolutionX = 2880;
 			resolutionY = 2880;
 			displayRotation = 0;
+			eyeRotation = 6;
+			parallelProjection = false;
 		}
 	};
 	// config for the Crystal OG
@@ -275,6 +277,8 @@ public:
 			resolutionX = 3840;
 			resolutionY = 3744;
 			displayRotation = 0;
+			eyeRotation = 6;
+			parallelProjection = false;
 		}
 	};
 	// config for the Crystal Super

@@ -161,5 +161,8 @@
     <ClCompile Include="src\Helpers\UsbUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Distortion\MapUvDistortionProfile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

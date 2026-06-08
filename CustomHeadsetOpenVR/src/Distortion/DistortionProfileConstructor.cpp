@@ -1,5 +1,6 @@
 #include "DistortionProfileConstructor.h"
 #include "RadialBezierDistortionProfile.h"
+#include "MapUvDistortionProfile.h"
 #include <cmath>
 #include <map>
 
@@ -228,8 +229,8 @@ bool DistortionProfileConstructor::LoadDistortionProfile(std::string name){
 		newProfile = radialBezierProfile;
 	}
 	else if(config.type == "MapUV"){
-		// TODO(mbucchia): Add new type. For now, use None.
-		newProfile = new NoneDistortionProfile();
+		MapUvDistortionProfile* mapUvProfile = new MapUvDistortionProfile(config.name);
+		newProfile = mapUvProfile;
 	}
 	
 	bool changed = false;
