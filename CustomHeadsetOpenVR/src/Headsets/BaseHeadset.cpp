@@ -184,7 +184,7 @@ bool BaseHeadsetShim::PreDisplayComponentComputeDistortion(vr::EVREye &eEye, flo
 	transformUV(redU, redV);
 	transformUV(greenU, greenV);
 	transformUV(blueU, blueV);
-	
+
 	std::lock_guard<std::mutex> lock(distortionProfileLock);
 	// apply distortion profile to each color channel
 	Point2D distortionRed = distortionProfileConstructor.profile->ComputeDistortion(eEye, ColorChannelRed, redU, redV);
@@ -516,8 +516,12 @@ void BaseHeadsetShim::UpdateSettings(){
 		distortionProfileConstructor.distortionSettings.maxFovX += fovBurnInOffsetX;
 		distortionProfileConstructor.distortionSettings.maxFovY += fovBurnInOffsetY;
 	}
-	
-	
+
+	uint32_t oldDistortionMeshResolution = GetConfigOld().distortionMeshResolution;
+	distortionProfileConstructor.distortionSettings.GetDistortionResolutionOverride(oldDistortionMeshResolution);
+	uint32_t distortionMeshResolution = GetConfig().distortionMeshResolution;
+	distortionProfileConstructor.distortionSettings.GetDistortionResolutionOverride(distortionMeshResolution);
+
 	bool shouldReInitializeDistortion = false;
 	shouldReInitializeDistortion |= GetConfigOld().maxFovX != GetConfig().maxFovX;
 	shouldReInitializeDistortion |= GetConfigOld().maxFovY != GetConfig().maxFovY;
@@ -534,7 +538,7 @@ void BaseHeadsetShim::UpdateSettings(){
 	shouldUpdateDistortion |= GetConfigOld().distortionZoom != GetConfig().distortionZoom;
 	shouldUpdateDistortion |= GetConfigOld().subpixelShift != GetConfig().subpixelShift;
 	shouldUpdateDistortion |= GetConfigOld().subpixelOffsets != GetConfig().subpixelOffsets;
-	shouldUpdateDistortion |= GetConfigOld().distortionMeshResolution != GetConfig().distortionMeshResolution;
+	shouldUpdateDistortion |= oldDistortionMeshResolution != distortionMeshResolution;
 	shouldUpdateDistortion |= GetConfigOld().disableEye != GetConfig().disableEye;
 	shouldUpdateDistortion |= GetConfigOld().disableEyeDecreaseFov != GetConfig().disableEyeDecreaseFov;
 	shouldUpdateDistortion |= GetConfigOld().displayRotation != GetConfig().displayRotation;
@@ -543,7 +547,7 @@ void BaseHeadsetShim::UpdateSettings(){
 	shouldUpdateDistortion |= (now - lastDistortionChangeTime) > 0.5 && needsDistortionFinalization;
 
 	
-	vr::VRProperties()->SetInt32Property(container, vr::Prop_DistortionMeshResolution_Int32, std::min(1024, GetConfig().distortionMeshResolution));
+	vr::VRProperties()->SetInt32Property(container, vr::Prop_DistortionMeshResolution_Int32, std::min(1024u, distortionMeshResolution));
 	if(GetConfigOld().superSamplingFilterPercent != GetConfig().superSamplingFilterPercent){
 		uint32_t renderResolutionX, renderResolutionY;
 		GetRecommendedRenderTargetSize(&renderResolutionX, &renderResolutionY);

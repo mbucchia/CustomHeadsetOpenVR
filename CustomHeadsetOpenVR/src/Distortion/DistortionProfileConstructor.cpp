@@ -1,5 +1,6 @@
 #include "DistortionProfileConstructor.h"
 #include "RadialBezierDistortionProfile.h"
+#include "MapUvDistortionProfile.h"
 #include <cmath>
 #include <map>
 
@@ -145,6 +146,16 @@ bool PopulateBuiltInDistortionProfiles(){
 		50.0, -0.7,
 	};
 	builtInDistortionProfiles[dreamAir.name] = dreamAir;
+
+	DistortionProfileConfig crystalSuper = {};
+	crystalSuper.name = "Crystal Super Default";
+	crystalSuper.device = "Crystal Super";
+	crystalSuper.modifiedTime = 0;
+	crystalSuper.description = "Default distortion profile for the Crystal Super in this driver. It is extracted from Pimax Play.";
+	crystalSuper.author = "Pimax";
+	crystalSuper.creationDate = 0.0;
+	crystalSuper.type = "MapUV";
+	builtInDistortionProfiles[crystalSuper.name] = crystalSuper;
 	
 	return true;
 };
@@ -206,6 +217,10 @@ bool DistortionProfileConstructor::LoadDistortionProfile(std::string name){
 		radialBezierProfile->offsetX = config.offsetX;
 		radialBezierProfile->offsetY = config.offsetY;
 		newProfile = radialBezierProfile;
+	}
+	else if(config.type == "MapUV"){
+		MapUvDistortionProfile* mapUvProfile = new MapUvDistortionProfile(config.name);
+		newProfile = mapUvProfile;
 	}
 	
 	bool changed = false;
