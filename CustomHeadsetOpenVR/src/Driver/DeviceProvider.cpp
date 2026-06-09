@@ -7,9 +7,10 @@
 #include "Hooking/InterfaceHookInjector.h"
 
 #include "../Headsets/MeganeX8K.h"
-#include "../Headsets/DreamAir.h"
 #include "../Headsets/GenericHeadset.h"
 #include "../Headsets/FakeHeadset.h"
+#include "../Headsets/PimaxLighthouse.h"
+#include "../Headsets/PimaxSlam.h"
 #include "../Helpers/EyeTrackingOutput.h"
 
 #include "../Config/ConfigLoader.h"
@@ -29,6 +30,16 @@ vr::EVRInitError CustomHeadsetDeviceProvider::Init(vr::IVRDriverContext *pDriver
 	InjectHooks(this, pDriverContext);
 	hidModifier.InjectHooks();
 	
+	// For Pimax SLAM headsets, load our own driver instead of shimming driver_lighthouse.
+	if(driverConfig.dreamAir.enable && PimaxCommon::GetHeadsetInfo().connected && PimaxCommon::GetHeadsetInfo().isOpenPortEnabled &&
+		PimaxCommon::GetHeadsetInfo().useSlamTracking) {
+		PimaxSlamDriver* pimaxSlamImplementation = new PimaxSlamDriver();
+		pimaxSlamImplementation->deviceProvider = this;
+		shims.insert(pimaxSlamImplementation);
+		vr::ITrackedDeviceServerDriver* driver = new ShimTrackedDeviceDriver(pimaxSlamImplementation, nullptr);
+		vr::VRServerDriverHost()->TrackedDeviceAdded("PimaxSlamCustomHMD", vr::TrackedDeviceClass_HMD, driver);
+	}
+
 	// the shim classes can be used to implement entirely new headsets, not just shim existing ones
 	if(driverConfig.fakeHeadset.enable){
 		FakeHeadset* fakeHeadsetImplementation = new FakeHeadset();
@@ -200,11 +211,12 @@ bool CustomHeadsetDeviceProvider::HandleDeviceAdded(const char *&pchDeviceSerial
 		
 		// TODO: validate the interface versions of drivers and make the shims conform to versions to prevent potential crashes
 		
-		if(driverConfig.dreamAir.enable){
-			DreamAirShim* dreamAirShim = new DreamAirShim();
-			dreamAirShim->deviceProvider = this;
-			shims.insert(dreamAirShim);
-			pDriver = new ShimTrackedDeviceDriver(dreamAirShim, pDriver);
+		if(driverConfig.dreamAir.enable && PimaxCommon::GetHeadsetInfo().connected && PimaxCommon::GetHeadsetInfo().isOpenPortEnabled &&
+			!PimaxCommon::GetHeadsetInfo().useSlamTracking){
+			PimaxLighthouseShim* pimaxLighthouseShim = new PimaxLighthouseShim();
+			pimaxLighthouseShim->deviceProvider = this;
+			shims.insert(pimaxLighthouseShim);
+			pDriver = new ShimTrackedDeviceDriver(pimaxLighthouseShim, pDriver);
 		}
 		
 		if(driverConfig.meganeX8K.enable){
