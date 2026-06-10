@@ -63,6 +63,9 @@
     <ClInclude Include="src\Config\Config.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Distortion\PimaxDistortionProfile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Driver\DeviceProvider.cpp">
@@ -168,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Helpers\PimaxCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Distortion\PimaxDistortionProfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

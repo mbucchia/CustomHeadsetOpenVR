@@ -24,10 +24,10 @@ public:
 	PimaxCommon();
 	virtual ~PimaxCommon() = default;
 	static PimaxHeadsetInfo GetHeadsetInfo();
-
-protected:
 	static pvrSessionHandle GetPvrSession();
 	static double GetPvrTime();
+
+protected:
 	pvrHmdInfo GetHmdInfo() const { return hmdInfo; };
 	pvrDisplayInfo GetDisplayInfo() const { return displayInfo; };
 
