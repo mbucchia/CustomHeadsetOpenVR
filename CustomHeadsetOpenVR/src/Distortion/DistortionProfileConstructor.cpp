@@ -1,6 +1,7 @@
 #include "DistortionProfileConstructor.h"
 #include "RadialBezierDistortionProfile.h"
 #include "MapUvDistortionProfile.h"
+#include "PimaxDistortionProfile.h"
 #include <cmath>
 #include <map>
 
@@ -157,6 +158,16 @@ bool PopulateBuiltInDistortionProfiles(){
 	crystalSuper.type = "MapUV";
 	builtInDistortionProfiles[crystalSuper.name] = crystalSuper;
 	
+	DistortionProfileConfig pimaxBuiltin = {};
+	pimaxBuiltin.name = "Pimax Builtin";
+	pimaxBuiltin.device = "Pimax";
+	pimaxBuiltin.modifiedTime = 0;
+	pimaxBuiltin.description = "Distortion Profile retrieved from Pimax API.";
+	pimaxBuiltin.author = "Pimax";
+	pimaxBuiltin.creationDate = 0.0;
+	pimaxBuiltin.type = "Pimax";
+	builtInDistortionProfiles[pimaxBuiltin.name] = pimaxBuiltin;
+
 	return true;
 };
 // this is pretty much just an initializer so immediately call
@@ -222,7 +233,11 @@ bool DistortionProfileConstructor::LoadDistortionProfile(std::string name){
 		MapUvDistortionProfile* mapUvProfile = new MapUvDistortionProfile(config.name);
 		newProfile = mapUvProfile;
 	}
-	
+	else if (config.type == "Pimax") {
+		PimaxDistortionProfile* pimaxProfile = new PimaxDistortionProfile();
+		newProfile = pimaxProfile;
+	}
+
 	bool changed = false;
 	
 	if(newProfile != nullptr){
