@@ -3,22 +3,23 @@
 
 bool DreamAirShim::IsDesiredHeadset(std::string model, vr::PropertyContainerHandle_t container){
 	std::string trackingSystem = vr::VRProperties()->GetStringProperty(container, vr::Prop_TrackingSystemName_String);
-	if(model == "Pimax Dream Air" && trackingSystem == "lighthouse"){
+	if(IsOpenPortEnabled() && (model == "Pimax Dream Air" || GetHmdInfo().ProductId == 0x0044) && (trackingSystem == "lighthouse" || trackingSystem == "aapvr")) {
 		return true;
 	}
 	return false;
 }
 
 Config::BaseHeadsetConfig& DreamAirShim::GetConfig(){
-	return driverConfig.dreamAir;
+	return PatchDisplayConfig(driverConfig.dreamAir);
 }
 
 Config::BaseHeadsetConfig& DreamAirShim::GetConfigOld(){
-	return driverConfigOld.dreamAir;
+	return PatchDisplayConfig(driverConfigOld.dreamAir);
 }
 
 
 void DreamAirShim::SubActivate(vr::PropertyContainerHandle_t container){
+	// TODO: Remove eye tracking bridge - aapvr driver already includes the code.
 	eyeTracking.eyeRotation = defaultDriverConfig.dreamAir.eyeRotation;
 	eyeTracking.enabled = GetConfig().enableEyeTracking;
 	eyeTracking.Initialize();
