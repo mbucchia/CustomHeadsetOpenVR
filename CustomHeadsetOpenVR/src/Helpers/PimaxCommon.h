@@ -7,6 +7,7 @@
 
 enum PimaxHeadsetType {
 	DreamAir = 0,
+	P2,
 
 	Invalid
 };

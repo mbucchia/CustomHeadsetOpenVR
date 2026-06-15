@@ -31,10 +31,12 @@ static bool EnsurePvrSession() {
 
 		pvrHmdInfo info = {};
 		pvr_getHmdInfo(s_pvrSession, &info);
-		// TODO: Add other Pimax headsets here.
 		switch (info.ProductId) {
-		case 0x0044:
+		case 0x0044: // Dream Air
 			s_info.headsetType = DreamAir;
+			break;
+		case 0x0101: // Pimax 5K and 8K series (share the same ProductId)
+			s_info.headsetType = P2;
 			break;
 		default:
 			DriverLog("Detected headset '%s' (%04x) - not supported", info.ProductName, info.ProductId);
