@@ -7,6 +7,7 @@
 
 enum PimaxHeadsetType {
 	DreamAir = 0,
+	Crystal,
 	P2,
 
 	Invalid

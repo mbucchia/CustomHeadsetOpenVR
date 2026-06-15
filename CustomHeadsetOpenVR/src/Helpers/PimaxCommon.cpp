@@ -35,6 +35,10 @@ static bool EnsurePvrSession() {
 		case 0x0044: // Dream Air
 			s_info.headsetType = DreamAir;
 			break;
+		case 0x0012: // Pimax Crystal
+		case 0x0040: // Pimax Crystal Super
+			s_info.headsetType = Crystal;
+			break;
 		case 0x0101: // Pimax 8K X
 			s_info.headsetType = P2;
 			break;
