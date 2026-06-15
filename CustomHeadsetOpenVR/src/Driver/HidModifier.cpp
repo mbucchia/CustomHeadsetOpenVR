@@ -286,6 +286,13 @@ std::string HidModifier::ReadLighthouseConfig(HidDeviceInfo &info){
 			{"direct_mode_edid_vid", 53826}, // PVR
 			// {"device_class", "controller"}, 
 		};
+		jsonOverrides["REF-HMD"] = {
+			{"device", {
+				{"eye_target_width_in_pixels", driverConfig.dreamAir.resolutionY},
+				{"eye_target_height_in_pixels", driverConfig.dreamAir.resolutionX},
+			}},
+			{"direct_mode_edid_vid", 53826}, // PVR
+		};
 	}
 	if(driverConfig.meganeX8K.enable){
 		jsonOverrides["MeganeX superlight 8K"] = {
