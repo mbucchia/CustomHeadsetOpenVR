@@ -1,4 +1,6 @@
 #pragma once
+#include "../Config/Config.h"
+
 #include <PVR.h>
 #include <PVR_API.h>
 #include <atomic>
@@ -16,6 +18,8 @@ struct PimaxInfo {
 	bool connected = false;
 	PimaxHeadsetType headsetType = Invalid;
 	bool useSlamTracking = false;
+	uint32_t resolutionX = 0;
+	uint32_t resolutionY = 0;
 };
 
 class PimaxCommon {
@@ -29,6 +33,8 @@ public:
 protected:
 	pvrHmdInfo GetHmdInfo() const { return hmdInfo; };
 	bool HasEyeTracking() const { return hasEyeTracking; }
+
+	Config::BaseHeadsetConfig& PatchConfig(Config::BaseHeadsetConfig& config);
 
 	bool CheckDeviceLost();
 

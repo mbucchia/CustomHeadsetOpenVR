@@ -15,7 +15,7 @@ Config::BaseHeadsetConfig& PimaxLighthouseShim::GetConfig(){
 	switch (GetInfo().headsetType){
 	case DreamAir:
 	default:
-		return driverConfig.dreamAir;
+		return PatchConfig(driverConfig.dreamAir);
 	}
 }
 
@@ -24,7 +24,7 @@ Config::BaseHeadsetConfig& PimaxLighthouseShim::GetConfigOld(){
 	switch (GetInfo().headsetType){
 	case DreamAir:
 	default:
-		return driverConfigOld.dreamAir;
+		return PatchConfig(driverConfigOld.dreamAir);
 	}
 }
 
