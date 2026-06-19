@@ -41,6 +41,8 @@ protected:
 	void StartEyeTracking();
 	void StopEyeTracking();
 
+	void SetVisibilityMeshes();
+
 private:
 	void EyeTrackingThread();
 

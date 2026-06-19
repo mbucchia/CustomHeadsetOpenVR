@@ -375,6 +375,9 @@ void PimaxSlamDriver::PosTrackedDeviceActivate(uint32_t& unObjectId, vr::EVRInit
 		eyeTrackingOutput.Initialize();
 	}
 
+	// TODO: Config?
+	SetVisibilityMeshes();
+
 	returnValue = vr::VRInitError_None;
 	BaseHeadsetShim::PosTrackedDeviceActivate(unObjectId, returnValue);
 }
